@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
+import { Ingredient } from '../../shared/ingredient.model'
 
 @Component({
   selector: 'app-shopping-edit',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShoppingEditComponent implements OnInit {
 
+  @ViewChild("nameInput") nameInput: ElementRef;
+  @ViewChild("amountInput") amountInput: ElementRef;
+
+  @Output("ingredientAdded") ingredientAddEmitter = new EventEmitter<Ingredient>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addClick() {
+    this.ingredientAddEmitter.emit(new Ingredient(
+      this.nameInput.nativeElement.value,
+      Number(this.amountInput.nativeElement.value)
+    ));
+    // return false so that submit button doesn't reload the whole thing
+    return false;
   }
 
 }
