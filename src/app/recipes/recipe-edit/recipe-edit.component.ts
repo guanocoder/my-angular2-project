@@ -9,6 +9,11 @@ import { Recipe } from 'app/recipes/recipe.model';
 @Component({
   selector: 'app-recipe-edit',
   templateUrl: './recipe-edit.component.html',
+  styles: [`
+    img {
+      max-height: 300px;
+    }
+  `]
 })
 export class RecipeEditComponent implements OnInit {
 
