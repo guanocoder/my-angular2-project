@@ -22,8 +22,12 @@ export class ShoppingListComponent implements OnInit, OnDestroy  {
     })
   }
 
+  onClick(index: number) {
+    this.shoppingList.startedEditing.next(index);
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
-  }  
+  }
 
 }

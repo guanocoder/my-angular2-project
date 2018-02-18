@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 export class ShoppingListService {
 
   ingredientsChanged = new Subject<Array<Ingredient>>();
+  startedEditing = new Subject<number>();
 
   constructor() { }
 
@@ -16,6 +17,10 @@ export class ShoppingListService {
 
   getIngredients() {
     return this.ingredients.slice();
+  }
+
+  getIngredient(index: number) {
+    return this.ingredients[index];
   }
 
   addIngredient(ingredient: Ingredient) {
