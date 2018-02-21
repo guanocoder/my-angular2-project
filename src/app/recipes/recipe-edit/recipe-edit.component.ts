@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { FormGroup, FormControl, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 
 import { RecipeService } from 'app/services/recipe.service';
 import { Recipe } from 'app/recipes/recipe.model';
@@ -11,6 +11,10 @@ import { Recipe } from 'app/recipes/recipe.model';
   styles: [`
     img {
       max-height: 300px;
+    }
+    input.ng-invalid.ng-touched,
+    textarea.ng-invalid.ng-touched {
+      border: 1px solid red;
     }
   `]
 })
@@ -32,21 +36,18 @@ export class RecipeEditComponent implements OnInit {
   }
 
   private initForm() {
-    let recipe: Recipe;
+    let recipe: Recipe = new Recipe('','','',[]);
 
     if(this.editMode) {
       recipe = this.recipeService.getRecipe(this.id);
     }
 
     this.recipeForm = new FormGroup({
-      'name': new FormControl(recipe.name),
-      'imagePath': new FormControl(recipe.imagePath),
-      'description': new FormControl(recipe.description),
+      'name': new FormControl(recipe.name, Validators.required),
+      'imagePath': new FormControl(recipe.imagePath, Validators.required),
+      'description': new FormControl(recipe.description, Validators.required),
       'ingredients': new FormArray(
-        recipe.ingredients.map(ingredient => new FormGroup({
-          'name': new FormControl(ingredient.name),
-          'amount': new FormControl(ingredient.amount)
-        }))
+        recipe.ingredients.map(ingredient => this.yieldIngredientFormGroup(ingredient.name, ingredient.amount))
       )
     });
 
@@ -59,10 +60,15 @@ export class RecipeEditComponent implements OnInit {
   }
 
   onAddIngredient() {
-    (<FormArray>this.recipeForm.get('ingredients')).push(new FormGroup({
-      'name': new FormControl(),
-      'amount': new FormControl(),
-    }));
+    (<FormArray>this.recipeForm.get('ingredients')).push(this.yieldIngredientFormGroup());
+  }
+
+
+  private yieldIngredientFormGroup(name: string = "", amount: number = 1): FormGroup {
+    return new FormGroup({
+      'name': new FormControl(name, Validators.required),
+      'amount': new FormControl(amount, [Validators.required, Validators.pattern(/^\d*\.?\d*$/)]),
+    });
   }
 
 }
