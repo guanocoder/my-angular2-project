@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+
 import { Recipe } from 'app/recipes/recipe.model';
 import { Ingredient } from 'app/shared/ingredient.model';
 import { ShoppingListService } from 'app/services/shopping-list.service';
 
 @Injectable()
 export class RecipeService {
+
+  recipesChanged = new Subject<Array<Recipe>>();
 
   constructor(private shoppingList: ShoppingListService) { }
 
@@ -72,6 +76,16 @@ export class RecipeService {
 
   addIngredientsToShoppingList(ingredients: Array<Ingredient>) {
     this.shoppingList.addIngredients(ingredients);
+  }
+
+  addRecipe(recipe: Recipe) {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.getRecipes());
+  }
+
+  updateRecipe(index: number, recipe: Recipe) {
+    this.recipes[index] = recipe;
+    this.recipesChanged.next(this.getRecipes());
   }
 
 }
