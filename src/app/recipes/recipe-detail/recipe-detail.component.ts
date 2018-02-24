@@ -11,6 +11,7 @@ import { RecipeService } from 'app/services/recipe.service';
 export class RecipeDetailComponent implements OnInit {
 
     @Input() recipe: Recipe;
+    id: number;
 
     constructor(private recipeService: RecipeService,
                 private route: ActivatedRoute,
@@ -18,12 +19,18 @@ export class RecipeDetailComponent implements OnInit {
 
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
-            this.recipe = this.recipeService.getRecipe(+params["id"]);
+            this.id = +params["id"];
+            this.recipe = this.recipeService.getRecipe(this.id);
         })
     }
 
     addIngredientsToShoppingList() {
         this.recipeService.addIngredientsToShoppingList(this.recipe.ingredients);
+    }
+
+    deleteRecipe() {
+        this.recipeService.deleteRecipe(this.id);
+        this.router.navigate(['../'], { relativeTo: this.route });
     }
 
     // Event not used because "routerLink" directive was preferred
