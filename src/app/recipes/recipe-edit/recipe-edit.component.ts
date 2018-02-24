@@ -73,6 +73,10 @@ export class RecipeEditComponent implements OnInit {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
+  onRemoveIngredient(index: number) {
+    (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
+  }
+
   private yieldIngredientFormGroup(name: string = "", amount: number = 1): FormGroup {
     return new FormGroup({
       'name': new FormControl(name, Validators.required),
