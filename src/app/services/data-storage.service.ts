@@ -18,6 +18,15 @@ export class DataStorageService {
         return this.http.get("https://my-angular2-project-dcc9b.firebaseio.com/recipes.json")
             .map(response => {
                 return response.json();
+            })
+            .map(recipes => {
+                // because Firebase removes properties that are empty arrays
+                recipes.forEach(recipe => {
+                    if(!recipe.ingredients) {
+                      recipe.ingredients = [];
+                    }
+                });
+                return recipes;
             });
     }
 }
