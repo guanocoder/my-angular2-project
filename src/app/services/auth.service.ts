@@ -13,4 +13,11 @@ export class AuthService {
     signIn(email: string, password: string) : Promise<any> {
         return firebase.auth().signInWithEmailAndPassword(email, password);
     }
+
+    getToken(): Promise<string> {
+        if(firebase.auth().currentUser)
+            return firebase.auth().currentUser.getToken();
+        else
+            return Promise.reject("User not authorized!");
+    }
 }

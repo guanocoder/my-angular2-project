@@ -15,15 +15,17 @@ export class HeaderComponent implements OnInit {
 
     onSaveData() {
         this.recipeService.saveRecipes().subscribe(result => {
-            console.log(result);
-            alert('done saving!');
+            console.log('done saving!', result);
+        }, error => {
+            console.log("Error while saving data to firebase", error);
         })
     }
 
     onLoadData() {
         this.recipeService.loadRecipes().subscribe(result => {
-            console.log(result);
-            alert('done loading!');
+            console.log('done loading!', result);
+        }, error => {
+            console.log("Error while loading data from firebase", error);
         })
     }
 
