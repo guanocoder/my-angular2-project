@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RecipeService } from '../services/recipe.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -8,7 +9,8 @@ import { RecipeService } from '../services/recipe.service';
 })
 export class HeaderComponent implements OnInit {
 
-    constructor(private recipeService: RecipeService) { }
+    constructor(private recipeService: RecipeService,
+                private authService: AuthService) { }
 
     ngOnInit() {
     }
@@ -27,6 +29,14 @@ export class HeaderComponent implements OnInit {
         }, error => {
             console.log("Error while loading data from firebase", error);
         })
+    }
+
+    onLogout() {
+        this.authService.logout().then(result => {
+            console.log("successfully logged out", result);
+        }).catch(error => {
+            console.log("error during logout", error);
+        });
     }
 
 }

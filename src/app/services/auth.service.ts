@@ -20,4 +20,12 @@ export class AuthService {
         else
             return Promise.reject("User not authorized!");
     }
+
+    isAuthenticated(): boolean  {
+        return firebase.auth().currentUser != null;
+    }
+
+    logout() {
+        return firebase.auth().signOut();
+    }
 }
