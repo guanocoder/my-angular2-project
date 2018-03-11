@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -23,6 +23,7 @@ import { SignUpComponent } from './auth/signup/signup.component';
 import { SignInComponent } from './auth/signin/signin.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
+import { FirebaseRequestInterceptor } from './shared/firebase-request.interceptor';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,18 @@ import { AuthGuardService } from './services/auth-guard.service';
     HttpClientModule,
     RoutingModule
   ],
-  providers: [ShoppingListService, RecipeService, DataStorageService, AuthService, AuthGuardService],
+  providers: [
+    ShoppingListService,
+    RecipeService,
+    DataStorageService,
+    AuthService,
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: FirebaseRequestInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
