@@ -1,33 +1,28 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Store } from '@ngrx/store';
+
 import { Ingredient } from "../shared/ingredient.model";
-import { ShoppingListService } from 'app/services/shopping-list.service';
-import { Subscription } from 'rxjs/Subscription';
+import { AppState } from '../ngrx/shopping-list.reducers';
+import { StartEditingIngredientAction } from '../ngrx/shopping-list.actions';
 
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css'],
 })
-export class ShoppingListComponent implements OnInit, OnDestroy  {
+export class ShoppingListComponent implements OnInit {
 
-  ingredients: Array<Ingredient> = [];
-  private subscription: Subscription;
+  state: Observable<{ingredients: Array<Ingredient>}>;
 
-  constructor(private shoppingList: ShoppingListService) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.ingredients = this.shoppingList.getIngredients();
-    this.subscription = this.shoppingList.ingredientsChanged.subscribe(ingredients => {
-      this.ingredients = ingredients;
-    })
+    this.state = this.store.select('shoppingList');
   }
 
   onClick(index: number) {
-    this.shoppingList.startedEditing.next(index);
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.store.dispatch(new StartEditingIngredientAction({ index: index }));
   }
 
 }

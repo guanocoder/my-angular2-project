@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model'
-import { ShoppingListService } from 'app/services/shopping-list.service';
+import { AddIngredientAction, DeleteIngredientAction, UpdateIngredientAction } from '../../ngrx/shopping-list.actions';
+import { AppState } from '../../ngrx/shopping-list.reducers';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -14,42 +16,55 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
   @ViewChild('editForm') editForm: NgForm;
   editMode = false;
-  editedItemIndex: number;
   editedItem: Ingredient;
   private subscription: Subscription;
 
-  constructor(private shoppingList: ShoppingListService) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-    this.subscription = this.shoppingList.startedEditing.subscribe(index => {
-      this.editMode = true;
-      this.editedItemIndex = index;
-      this.editedItem = this.shoppingList.getIngredient(index);
-      this.editForm.setValue({
-        name: this.editedItem.name,
-        amount: this.editedItem.amount
-      })
-    });
+    this.subscription = this.store.select('shoppingList')
+      /// ----------- I was getting the following error: ------------------------------------
+      /// ShoppingListComponent.html:6 ERROR Error: 
+      //  There are no form controls registered with this group yet.  If you're using ngModel,
+      //  you may want to check next tick (e.g. use setTimeout).
+      //  ------------------------------------------------------------------------------------
+      //  I guess the problem is that I am using NgForm instead of reactive Forms with rxjs
+      //  the workaround is the .delay(0) that should execute the following code in the next
+      //  angular tick
+      .delay(0)
+      .subscribe(state => {
+        if(state.editedIngredientIndex > -1) {          
+          this.editMode = true;
+          this.editedItem = state.editedIngredient;
+          this.editForm.setValue({
+            name: this.editedItem.name,
+            amount: this.editedItem.amount
+          })
+        } else {
+          this.editMode = false;
+        }
+      });
   }
 
   onSubmit(form: NgForm) {
     const value = form.value;
     let ingredient = new Ingredient(value.name, value.amount);
     if(this.editMode) {
-      this.shoppingList.updateIngredient(this.editedItemIndex, ingredient);
+      this.store.dispatch(new UpdateIngredientAction(ingredient));
     } else {
-      this.shoppingList.addIngredient(ingredient);
+      this.store.dispatch(new AddIngredientAction(ingredient));
     }
     this.resetForm();
   }
 
   deleteItem() {
-    this.shoppingList.removeIngredient(this.editedItemIndex);
+    this.store.dispatch(new DeleteIngredientAction());
     this.resetForm()
   }  
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    console.log("unsubscribing");
+    this.subscription.unsubscribe();    
   }
 
   resetForm() {

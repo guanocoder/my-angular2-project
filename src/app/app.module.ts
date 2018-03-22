@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { StoreModule } from '@ngrx/store';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -12,11 +13,9 @@ import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-it
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit.component';
 import { DropdownDirective } from './shared/dropdown.directive';
-import { ShoppingListService } from 'app/services/shopping-list.service';
 import { RoutingModule } from 'app/routing/routing.module';
 import { RecipeHomeComponent } from './recipes/recipe-home/recipe-home.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-
 import { RecipeService } from './services/recipe.service';
 import { DataStorageService } from './services/data-storage.service';
 import { SignUpComponent } from './auth/signup/signup.component';
@@ -24,6 +23,7 @@ import { SignInComponent } from './auth/signin/signin.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { FirebaseRequestInterceptor } from './shared/firebase-request.interceptor';
+import { shoppingListReducer } from './ngrx/shopping-list.reducers';
 
 @NgModule({
   declarations: [
@@ -46,10 +46,10 @@ import { FirebaseRequestInterceptor } from './shared/firebase-request.intercepto
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    RoutingModule
+    RoutingModule,
+    StoreModule.forRoot({ shoppingList: shoppingListReducer })
   ],
   providers: [
-    ShoppingListService,
     RecipeService,
     DataStorageService,
     AuthService,
