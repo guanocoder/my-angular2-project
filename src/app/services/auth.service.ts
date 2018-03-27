@@ -1,17 +1,27 @@
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import * as firebase from 'firebase';
+
+import { AppState } from '../ngrx/app.reducers';
+import { SignInAction, SignUpAction, LogOutAction } from '../ngrx/auth.actions';
 
 @Injectable()
 export class AuthService {
 
-    constructor() { }
+    constructor(private store: Store<AppState>) { }
 
     signUp(email: string, password: string) : Promise<any> {
-        return firebase.auth().createUserWithEmailAndPassword(email, password);
+        return firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
+            this.store.dispatch(new SignUpAction());
+            return user;
+        });
     }
 
     signIn(email: string, password: string) : Promise<any> {
-        return firebase.auth().signInWithEmailAndPassword(email, password);
+        return firebase.auth().signInWithEmailAndPassword(email, password).then(_ => {
+            this.store.dispatch(new SignInAction());
+            return _;
+        });
     }
 
     getToken(): Promise<string> {
@@ -26,6 +36,9 @@ export class AuthService {
     }
 
     logout() {
-        return firebase.auth().signOut();
+        return firebase.auth().signOut().then(_ => {
+            this.store.dispatch(new LogOutAction());
+            return _;
+        });
     }
 }

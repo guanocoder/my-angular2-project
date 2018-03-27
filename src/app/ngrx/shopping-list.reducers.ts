@@ -3,10 +3,6 @@ import { Action } from "@ngrx/store";
 import { Ingredient } from "../shared/ingredient.model";
 import { ShoppingListAction, Actions } from "./shopping-list.actions";
 
-export interface AppState {
-    shoppingList: ShoppingListState;
-}
-
 export interface ShoppingListState {
     ingredients: Array<Ingredient>;
     editedIngredient: Ingredient;

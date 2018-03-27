@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 
 import { Ingredient } from '../../shared/ingredient.model'
 import { AddIngredientAction, DeleteIngredientAction, UpdateIngredientAction } from '../../ngrx/shopping-list.actions';
-import { AppState } from '../../ngrx/shopping-list.reducers';
+import { AppState } from '../../ngrx/app.reducers';
 
 @Component({
   selector: 'app-shopping-edit',

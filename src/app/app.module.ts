@@ -23,7 +23,7 @@ import { SignInComponent } from './auth/signin/signin.component';
 import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { FirebaseRequestInterceptor } from './shared/firebase-request.interceptor';
-import { shoppingListReducer } from './ngrx/shopping-list.reducers';
+import { appReducers } from './ngrx/app.reducers';
 
 @NgModule({
   declarations: [
@@ -47,7 +47,7 @@ import { shoppingListReducer } from './ngrx/shopping-list.reducers';
     ReactiveFormsModule,
     HttpClientModule,
     RoutingModule,
-    StoreModule.forRoot({ shoppingList: shoppingListReducer })
+    StoreModule.forRoot(appReducers)
   ],
   providers: [
     RecipeService,

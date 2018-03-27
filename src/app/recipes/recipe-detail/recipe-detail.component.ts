@@ -5,7 +5,7 @@ import { Recipe } from "../recipe.model";
 import { RecipeService } from 'app/services/recipe.service';
 import { Ingredient } from '../../shared/ingredient.model';
 import { AddMultipleIngredientsAction } from '../../ngrx/shopping-list.actions';
-import { AppState } from '../../ngrx/shopping-list.reducers';
+import { AppState } from '../../ngrx/app.reducers';
 
 @Component({
     selector: 'app-recipe-detail',
