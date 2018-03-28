@@ -22,7 +22,7 @@ export class LogOutAction implements Action {
 export class SetTokenAction implements Action {
     readonly type = Actions.SetToken;
 
-    constructor(public payload: string) {}
+    constructor(public token: string) {}
 }
 
 export type AuthAction = SignUpAction | SignInAction | LogOutAction | SetTokenAction;

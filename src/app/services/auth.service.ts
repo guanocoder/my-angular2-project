@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import * as firebase from 'firebase';
 
 import { AppState } from '../ngrx/app.reducers';
-import { SignInAction, SignUpAction, LogOutAction } from '../ngrx/auth.actions';
+import { SignInAction, SignUpAction, LogOutAction, SetTokenAction } from '../ngrx/auth.actions';
 
 @Injectable()
 export class AuthService {
@@ -13,14 +13,18 @@ export class AuthService {
     signUp(email: string, password: string) : Promise<any> {
         return firebase.auth().createUserWithEmailAndPassword(email, password).then(user => {
             this.store.dispatch(new SignUpAction());
-            return user;
+            return this.getToken().then(token => {
+                this.store.dispatch(new SetTokenAction(token));
+            }).then(_ => user);
         });
     }
 
     signIn(email: string, password: string) : Promise<any> {
-        return firebase.auth().signInWithEmailAndPassword(email, password).then(_ => {
+        return firebase.auth().signInWithEmailAndPassword(email, password).then(user => {
             this.store.dispatch(new SignInAction());
-            return _;
+            return this.getToken().then(token => {
+                this.store.dispatch(new SetTokenAction(token));
+            }).then(_ => user);
         });
     }
 
