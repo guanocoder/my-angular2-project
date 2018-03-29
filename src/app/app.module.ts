@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -24,6 +25,7 @@ import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { FirebaseRequestInterceptor } from './shared/firebase-request.interceptor';
 import { appReducers } from './ngrx/app.reducers';
+import { AuthEffects } from './ngrx/auth.effects';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { appReducers } from './ngrx/app.reducers';
     ReactiveFormsModule,
     HttpClientModule,
     RoutingModule,
-    StoreModule.forRoot(appReducers)
+    StoreModule.forRoot(appReducers),
+    EffectsModule.forRoot([AuthEffects]),
   ],
   providers: [
     RecipeService,

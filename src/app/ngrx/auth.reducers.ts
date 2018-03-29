@@ -1,4 +1,4 @@
-import { AuthAction, Actions } from "./auth.actions";
+import { AuthAction, AuthActions } from "./auth.actions";
 
 
 export interface AuthState {
@@ -14,19 +14,19 @@ const initialState: AuthState = {
 export function authReducer(state = initialState, action: AuthAction) {
 
     switch(action.type) {
-        case Actions.SignIn:
-        case Actions.SignUp:
+        case AuthActions.SignedIn:
+        case AuthActions.SignedUp:
             return {
                 ...state,
                 isAuthenticated: true,
             }
-        case Actions.LogOut:
+        case AuthActions.LogOut:
             return {
                 ...state,
                 token: null,
                 isAuthenticated: false,
             }
-        case Actions.SetToken:
+        case AuthActions.SetToken:
             return {
                 ...state,
                 token: action.token,

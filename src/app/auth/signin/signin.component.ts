@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
-import { AuthService } from '../../services/auth.service';
+import { AppState } from '../../ngrx/app.reducers';
+import { TrySignInAction } from '../../ngrx/auth.actions';
 
 @Component({
     selector: 'app-signin',
@@ -11,19 +12,13 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SignInComponent implements OnInit {
 
-    constructor(private authService: AuthService,
-                private router: Router) { }
+    constructor(private store: Store<AppState>) { }
 
     ngOnInit() {
     }
 
     onSignIn(form: NgForm) {
-        this.authService.signIn(form.value.email, form.value.password).then(result => {
-            console.log("User signed in successfully", result);
-            this.router.navigate(["/"]);
-        }).catch(error => {
-            console.log("Error during user authorization", error);
-        })
+        this.store.dispatch(new TrySignInAction(form.value.email, form.value.password));
     }
 
 }
