@@ -3,6 +3,7 @@ import { Action } from '@ngrx/store';
 export enum AuthActions {
     TrySignUp = "TRY_SIGN_UP",
     TrySignIn = "TRY_SIGN_IN",
+    TryLogOut = "TRY_LOG_OUT",
     SignedUp = "SIGN_UP",
     SignedIn = "SIGN_IN",
     LogOut = "LOG_OUT",
@@ -19,6 +20,10 @@ export class TrySignInAction implements Action {
     readonly type = AuthActions.TrySignIn;
     constructor(public email: string,
                 public password: string) {}
+}
+
+export class TryLogOutAction implements Action {
+    readonly type = AuthActions.TryLogOut;
 }
 
 export class SignUpAction implements Action {

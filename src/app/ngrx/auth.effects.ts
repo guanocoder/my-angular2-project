@@ -1,7 +1,7 @@
 import { Effect, Actions } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AuthActions, TrySignUpAction, TrySignInAction, SignUpAction, SetTokenAction, SignInAction } from './auth.actions';
+import { AuthActions, TrySignUpAction, TrySignInAction, SignUpAction, SetTokenAction, SignInAction, LogOutAction } from './auth.actions';
 import * as firebase from 'firebase';
 import { Router } from '@angular/router';
 
@@ -48,7 +48,19 @@ export class AuthEffects {
         }).do(_ => {
             this.router.navigate(["/"]);
         });
-            
+    
+    @Effect()
+    authLogOut = this.actionsObservable
+        .ofType(AuthActions.TryLogOut)
+        .map((action: LogOutAction) => {
+            return firebase.auth().signOut();
+        }).switchMap(_ => {
+            return [
+                new LogOutAction()
+            ]
+        }).do(_ => {
+            this.router.navigate(["/"]);
+        });
 
     constructor(private actionsObservable: Actions,
                 private router: Router) {

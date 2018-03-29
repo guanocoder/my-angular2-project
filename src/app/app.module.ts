@@ -21,7 +21,6 @@ import { RecipeService } from './services/recipe.service';
 import { DataStorageService } from './services/data-storage.service';
 import { SignUpComponent } from './auth/signup/signup.component';
 import { SignInComponent } from './auth/signin/signin.component';
-import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './services/auth-guard.service';
 import { FirebaseRequestInterceptor } from './shared/firebase-request.interceptor';
 import { appReducers } from './ngrx/app.reducers';
@@ -55,7 +54,6 @@ import { AuthEffects } from './ngrx/auth.effects';
   providers: [
     RecipeService,
     DataStorageService,
-    AuthService,
     AuthGuardService,
     {
       provide: HTTP_INTERCEPTORS,

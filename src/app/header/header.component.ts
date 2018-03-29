@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable'
 
 import { RecipeService } from '../services/recipe.service';
-import { AuthService } from '../services/auth.service';
 import { AppState } from '../ngrx/app.reducers';
 import { AuthState } from '../ngrx/auth.reducers';
+import { TryLogOutAction } from '../ngrx/auth.actions';
 
 @Component({
     selector: 'app-header',
@@ -17,7 +17,6 @@ export class HeaderComponent implements OnInit {
     authState: Observable<AuthState>;
    
     constructor(private recipeService: RecipeService,
-                public authService: AuthService,
                 private store: Store<AppState>) { }
 
     ngOnInit() {
@@ -41,11 +40,7 @@ export class HeaderComponent implements OnInit {
     }
 
     onLogout() {
-        this.authService.logout().then(result => {
-            console.log("successfully logged out", result);
-        }).catch(error => {
-            console.log("error during logout", error);
-        });
+        this.store.dispatch(new TryLogOutAction());
     }
 
 }
