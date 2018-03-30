@@ -4,6 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
+import { environment } from './../environments/environment';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -50,6 +53,7 @@ import { AuthEffects } from './ngrx/auth.effects';
     RoutingModule,
     StoreModule.forRoot(appReducers),
     EffectsModule.forRoot([AuthEffects]),
+    (!environment.production) ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [
     RecipeService,
