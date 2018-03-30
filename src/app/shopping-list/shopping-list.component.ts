@@ -9,11 +9,10 @@ import { StartEditingIngredientAction } from '../ngrx/shopping-list.actions';
 @Component({
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
-  styleUrls: ['./shopping-list.component.css'],
 })
 export class ShoppingListComponent implements OnInit {
 
-  state: Observable<{ingredients: Array<Ingredient>}>;
+  public state: Observable<{ingredients: Array<Ingredient>}>;
 
   constructor(private store: Store<AppState>) { }
 
@@ -21,7 +20,7 @@ export class ShoppingListComponent implements OnInit {
     this.state = this.store.select('shoppingList');
   }
 
-  onClick(index: number) {
+  public onClick(index: number) {
     this.store.dispatch(new StartEditingIngredientAction({ index: index }));
   }
 

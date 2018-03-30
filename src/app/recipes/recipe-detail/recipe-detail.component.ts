@@ -14,7 +14,7 @@ import { AppState } from '../../ngrx/app.reducers';
 })
 export class RecipeDetailComponent implements OnInit {
 
-    @Input() recipe: Recipe;
+    @Input() public recipe: Recipe;
     id: number;
 
     constructor(private recipeService: RecipeService,
@@ -29,17 +29,17 @@ export class RecipeDetailComponent implements OnInit {
         })
     }
 
-    addIngredientsToShoppingList() {
+    public addIngredientsToShoppingList() {
         this.store.dispatch(new AddMultipleIngredientsAction(this.recipe.ingredients));
     }
 
-    deleteRecipe() {
+    public deleteRecipe() {
         this.recipeService.deleteRecipe(this.id);
         this.router.navigate(['../'], { relativeTo: this.route });
     }
 
     // Event not used because "routerLink" directive was preferred
-    onEditRecipe() {
+    public onEditRecipe() {
         this.router.navigate(['edit'], { relativeTo: this.route });
         // this.router.navigate(['..',this.id,'edit'], { relativeTo: this.route });
     }

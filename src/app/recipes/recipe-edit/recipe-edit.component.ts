@@ -22,7 +22,7 @@ export class RecipeEditComponent implements OnInit {
 
   id: number;
   editMode = false;
-  recipeForm: FormGroup;
+  public recipeForm: FormGroup;
 
   constructor(private route: ActivatedRoute,
               private recipeService: RecipeService,
@@ -60,7 +60,7 @@ export class RecipeEditComponent implements OnInit {
     return (<FormArray>this.recipeForm.get('ingredients')).controls;
   }
 
-  onSubmit() {
+  public onSubmit() {
     if(this.editMode) {
       this.recipeService.updateRecipe(this.id, this.recipeForm.value);
     } else {
@@ -69,15 +69,15 @@ export class RecipeEditComponent implements OnInit {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  onAddIngredient() {
+  public onAddIngredient() {
     (<FormArray>this.recipeForm.get('ingredients')).push(this.yieldIngredientFormGroup());
   }
 
-  onCancel() {
+  public onCancel() {
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  onRemoveIngredient(index: number) {
+  public onRemoveIngredient(index: number) {
     (<FormArray>this.recipeForm.get('ingredients')).removeAt(index);
   }
 

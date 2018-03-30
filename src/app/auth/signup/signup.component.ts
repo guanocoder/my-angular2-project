@@ -8,7 +8,6 @@ import { TrySignUpAction } from '../../ngrx/auth.actions';
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
-    styleUrls: ['./signup.component.css']
 })
 export class SignUpComponent implements OnInit {
 
@@ -17,7 +16,7 @@ export class SignUpComponent implements OnInit {
     ngOnInit() {
     }
 
-    onSignUp(form: NgForm) {
+    public onSignUp(form: NgForm) {
         this.store.dispatch(new TrySignUpAction(form.value.email, form.value.password));
     }
 

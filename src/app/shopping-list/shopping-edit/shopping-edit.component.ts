@@ -10,13 +10,12 @@ import { AppState } from '../../ngrx/app.reducers';
 @Component({
   selector: 'app-shopping-edit',
   templateUrl: './shopping-edit.component.html',
-  styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
 
-  @ViewChild('editForm') editForm: NgForm;
-  editMode = false;
-  editedItem: Ingredient;
+  @ViewChild('editForm') public editForm: NgForm;
+  public editMode = false;
+  private editedItem: Ingredient;
   private subscription: Subscription;
 
   constructor(private store: Store<AppState>) { }
@@ -46,7 +45,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
       });
   }
 
-  onSubmit(form: NgForm) {
+  public onSubmit(form: NgForm) {
     const value = form.value;
     let ingredient = new Ingredient(value.name, value.amount);
     if(this.editMode) {
@@ -57,7 +56,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.resetForm();
   }
 
-  deleteItem() {
+  public deleteItem() {
     this.store.dispatch(new DeleteIngredientAction());
     this.resetForm()
   }  
@@ -66,7 +65,7 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();    
   }
 
-  resetForm() {
+  public resetForm() {
     this.editMode = false;
     this.editForm.reset();
   }

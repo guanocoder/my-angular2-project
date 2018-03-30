@@ -10,11 +10,10 @@ import { TryLogOutAction } from '../ngrx/auth.actions';
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
-    styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
 
-    authState: Observable<AuthState>;
+    public authState: Observable<AuthState>;
    
     constructor(private recipeService: RecipeService,
                 private store: Store<AppState>) { }
@@ -23,7 +22,7 @@ export class HeaderComponent implements OnInit {
         this.authState = this.store.select('auth');
     }
 
-    onSaveData() {
+    public onSaveData() {
         this.recipeService.saveRecipes().subscribe(result => {
             console.log('done saving!', result);
         }, error => {
@@ -31,7 +30,7 @@ export class HeaderComponent implements OnInit {
         })
     }
 
-    onLoadData() {
+    public onLoadData() {
         this.recipeService.loadRecipes().subscribe(result => {
             console.log('done loading!', result);
         }, error => {
@@ -39,7 +38,7 @@ export class HeaderComponent implements OnInit {
         })
     }
 
-    onLogout() {
+    public onLogout() {
         this.store.dispatch(new TryLogOutAction());
     }
 
