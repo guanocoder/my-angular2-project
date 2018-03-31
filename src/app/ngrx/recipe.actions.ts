@@ -8,7 +8,6 @@ export enum RecipeActions {
     TryLoadRecipes = "TRY_LOAD_RECIPES",
     LoadedRecipes = "LOADED_RECIPES",
     TrySaveRecipes = "TRY_SAVE_RECIPES",
-    SavedRecipes = "SAVED_RECIPES",
     SelectRecipe = "SELECT_RECIPE",
 }
 
@@ -41,13 +40,9 @@ export class TrySaveRecipesAction implements Action {
     readonly type = RecipeActions.TrySaveRecipes;
 }
 
-export class SavedRecipesAction implements Action {
-    readonly type = RecipeActions.SavedRecipes;
-}
-
 export class SelectRecipeAction implements Action {
     readonly type = RecipeActions.SelectRecipe
     constructor(public index: number) {}
 }
 
-export type RecipeAction = AddRecipeAction | EditRecipeAction | DeleteRecipeAction | LoadedRecipesAction | SavedRecipesAction | SelectRecipeAction;
+export type RecipeAction = AddRecipeAction | EditRecipeAction | DeleteRecipeAction | LoadedRecipesAction | SelectRecipeAction;

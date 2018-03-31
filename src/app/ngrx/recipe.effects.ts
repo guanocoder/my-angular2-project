@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Effect, Actions } from "@ngrx/effects";
-import { RecipeActions, LoadedRecipesAction, TrySaveRecipesAction, SavedRecipesAction, RecipeAction } from "./recipe.actions";
+import { RecipeActions, LoadedRecipesAction, TrySaveRecipesAction, RecipeAction } from "./recipe.actions";
 import { DataStorageService } from "../services/data-storage.service";
 import { Store } from "@ngrx/store";
 import { AppState } from "./app.reducers";
@@ -16,14 +16,13 @@ export class RecipeEffects {
          })
         .map(recipes => new LoadedRecipesAction(recipes))
 
-    @Effect()
+    @Effect({dispatch: false}) // No need to fire events upon completion
     saveRecipes = this.actionsObservable
         .ofType(RecipeActions.TrySaveRecipes)
         .withLatestFrom(this.store.select('recipes'))
         .switchMap(([action, state] : [TrySaveRecipesAction, RecipeState]) => {
             return this.storageService.storeRecipes(state.recipes);
-        })
-        .map(_ => new SavedRecipesAction());
+        });
 
     constructor(private actionsObservable: Actions,
                 private storageService: DataStorageService,
