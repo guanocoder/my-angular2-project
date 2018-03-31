@@ -4,11 +4,13 @@ import { AuthAction, AuthActions } from "./auth.actions";
 export interface AuthState {
     token: string;
     isAuthenticated: boolean;
+    errorMessage: string;
 }
 
 const initialState: AuthState = {
     token: null,
     isAuthenticated: false,
+    errorMessage: null
 }
 
 export function authReducer(state = initialState, action: AuthAction) {
@@ -19,6 +21,7 @@ export function authReducer(state = initialState, action: AuthAction) {
             return {
                 ...state,
                 isAuthenticated: true,
+                errorMessage: null,
             }
         case AuthActions.LogOut:
             return {
@@ -30,6 +33,12 @@ export function authReducer(state = initialState, action: AuthAction) {
             return {
                 ...state,
                 token: action.token,
+                errorMessage: null,
+            }
+        case AuthActions.ErrorOnSignIn:
+            return {
+                ...state,
+                errorMessage: action.message,
             }
         default:
             return state;

@@ -7,7 +7,8 @@ export enum AuthActions {
     SignedUp = "SIGN_UP",
     SignedIn = "SIGN_IN",
     LogOut = "LOG_OUT",
-    SetToken = "SET_TOKEN"
+    SetToken = "SET_TOKEN",
+    ErrorOnSignIn = "ERROR_ON_SIGN_IN",
 }
 
 export class TrySignUpAction implements Action {
@@ -44,4 +45,10 @@ export class SetTokenAction implements Action {
     constructor(public token: string) {}
 }
 
-export type AuthAction = SignUpAction | SignInAction | LogOutAction | SetTokenAction;
+export class ErrorOnSignInAction implements Action {
+    readonly type = AuthActions.ErrorOnSignIn;
+
+    constructor(public message: string) {}
+}
+
+export type AuthAction = SignUpAction | SignInAction | LogOutAction | SetTokenAction | ErrorOnSignInAction;
