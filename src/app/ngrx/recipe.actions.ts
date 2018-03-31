@@ -39,7 +39,6 @@ export class LoadedRecipesAction implements Action {
 
 export class TrySaveRecipesAction implements Action {
     readonly type = RecipeActions.TrySaveRecipes;
-    constructor(public recipes: Array<Recipe>) {}
 }
 
 export class SavedRecipesAction implements Action {

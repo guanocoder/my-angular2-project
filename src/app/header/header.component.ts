@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
     }
 
     public onSaveData() {
-        this.store.dispatch(new TrySaveRecipesAction(this.recipes));
+        this.store.dispatch(new TrySaveRecipesAction());
     }
 
     public onLoadData() {
