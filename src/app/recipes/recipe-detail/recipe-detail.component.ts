@@ -2,10 +2,10 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Recipe } from "../recipe.model";
-import { RecipeService } from 'app/services/recipe.service';
 import { Ingredient } from '../../shared/ingredient.model';
 import { AddMultipleIngredientsAction } from '../../ngrx/shopping-list.actions';
 import { AppState } from '../../ngrx/app.reducers';
+import { SelectRecipeAction, DeleteRecipeAction } from '../../ngrx/recipe.actions';
 
 @Component({
     selector: 'app-recipe-detail',
@@ -14,18 +14,21 @@ import { AppState } from '../../ngrx/app.reducers';
 })
 export class RecipeDetailComponent implements OnInit {
 
-    @Input() public recipe: Recipe;
+    @Input() public recipe: Recipe = new Recipe('','','',[]);
     id: number;
 
-    constructor(private recipeService: RecipeService,
-                private route: ActivatedRoute,
+    constructor(private route: ActivatedRoute,
                 private router: Router,
                 private store: Store<AppState>) { }
 
     ngOnInit() {
+        this.store.select('recipes').subscribe(state => {
+            this.id = state.selectedRecipeIndex;
+            this.recipe = state.selectedRecipe;
+        });
         this.route.params.subscribe((params: Params) => {
             this.id = +params["id"];
-            this.recipe = this.recipeService.getRecipe(this.id);
+            this.store.dispatch(new SelectRecipeAction(this.id));
         })
     }
 
@@ -34,7 +37,7 @@ export class RecipeDetailComponent implements OnInit {
     }
 
     public deleteRecipe() {
-        this.recipeService.deleteRecipe(this.id);
+        this.store.dispatch(new DeleteRecipeAction(this.id));
         this.router.navigate(['../'], { relativeTo: this.route });
     }
 

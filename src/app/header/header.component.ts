@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable'
 
-import { RecipeService } from '../services/recipe.service';
 import { AppState } from '../ngrx/app.reducers';
 import { AuthState } from '../ngrx/auth.reducers';
 import { TryLogOutAction } from '../ngrx/auth.actions';
+import { TrySaveRecipesAction, TryLoadRecipesAction } from '../ngrx/recipe.actions';
+import { Recipe } from '../recipes/recipe.model';
 
 @Component({
     selector: 'app-header',
@@ -14,28 +15,23 @@ import { TryLogOutAction } from '../ngrx/auth.actions';
 export class HeaderComponent implements OnInit {
 
     public authState: Observable<AuthState>;
+    public recipes: Recipe[];
    
-    constructor(private recipeService: RecipeService,
-                private store: Store<AppState>) { }
+    constructor(private store: Store<AppState>) { }
 
     ngOnInit() {
         this.authState = this.store.select('auth');
+        this.store.select('recipes').subscribe(state => {
+            this.recipes = state.recipes;
+        })
     }
 
     public onSaveData() {
-        this.recipeService.saveRecipes().subscribe(result => {
-            console.log('done saving!', result);
-        }, error => {
-            console.log("Error while saving data to firebase", error);
-        })
+        this.store.dispatch(new TrySaveRecipesAction(this.recipes));
     }
 
     public onLoadData() {
-        this.recipeService.loadRecipes().subscribe(result => {
-            console.log('done loading!', result);
-        }, error => {
-            console.log("Error while loading data from firebase", error);
-        })
+        this.store.dispatch(new TryLoadRecipesAction());
     }
 
     public onLogout() {

@@ -23,7 +23,6 @@ import { DropdownDirective } from './shared/dropdown.directive';
 import { RoutingModule } from 'app/routing/routing.module';
 import { RecipeHomeComponent } from './recipes/recipe-home/recipe-home.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-import { RecipeService } from './services/recipe.service';
 import { DataStorageService } from './services/data-storage.service';
 import { SignUpComponent } from './auth/signup/signup.component';
 import { SignInComponent } from './auth/signin/signin.component';
@@ -31,6 +30,7 @@ import { AuthGuardService } from './services/auth-guard.service';
 import { FirebaseRequestInterceptor } from './shared/firebase-request.interceptor';
 import { appReducers } from './ngrx/app.reducers';
 import { AuthEffects } from './ngrx/auth.effects';
+import { RecipeEffects } from './ngrx/recipe.effects';
 
 @NgModule({
   declarations: [
@@ -55,12 +55,11 @@ import { AuthEffects } from './ngrx/auth.effects';
     HttpClientModule,
     RoutingModule,
     StoreModule.forRoot(appReducers),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, RecipeEffects]),
     StoreRouterConnectingModule,
     (!environment.production) ? StoreDevtoolsModule.instrument() : [],
   ],
   providers: [
-    RecipeService,
     DataStorageService,
     AuthGuardService,
     {
